@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-app.get('/', (_req, response) => {
+app.get('/books', (_req, response) => {
   response.send('<h1>Read books</h1>');
 });
 
