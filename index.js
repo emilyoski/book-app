@@ -1,9 +1,13 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 app.use(express.json());
 
-app.get('/books', (_req, response) => {
-  response.send('<h1>Read books</h1>');
+// postgres connection for books by id
+
+app.get('/api/books', (_req, response) => {
+  response.send('Harry Potter');
 });
 
 const PORT = 3001;
