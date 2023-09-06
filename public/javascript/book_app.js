@@ -15,7 +15,8 @@ let bookRecommendationSelector = {
 
     let response = await fetch('/api/books', requestInfo);
     let data = await response.json()
-    $('#book').html(data)
+    let book = JSON.parse(data)
+    $('#book').html(book['book'])
   }
 }
 
