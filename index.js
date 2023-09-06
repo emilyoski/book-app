@@ -7,6 +7,7 @@ app.use(express.json());
 const pgp = require('pg-promise');
 const db = pgp('postgres://username:password@host:port/database');
 let bookData;
+let dbclient;
 
 function generateRandomNumber(min, max) {
   min = Math.ceil(min);
@@ -14,7 +15,12 @@ function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-db.many('SELECT * FROM books;')
+db.connect().then(sco => {
+  dbclient = sco;
+}).catch(err => {
+  console.log(err)
+})
+dbclient.many('SELECT * FROM books;')
   .then((data) => {
     bookData = data.values
     console.log('DATA:', data.values)
