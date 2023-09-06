@@ -23,10 +23,10 @@ db.many('SELECT * FROM books;')
     console.log('ERROR:', error)
   })
 
-
 app.get('/api/books', (_req, response) => {
   let idx = generateRandomNumber(0, 6)
-  response.json(bookData[idx]);
+  let book = JSON.stringify({ book: bookData[idx] })
+  response.json(book);
 });
 
 const PORT = 3001;
