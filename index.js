@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const mongoose = require('mongoose');
 app.use(cors());
 app.use(express.json());
 
@@ -16,6 +17,7 @@ let cn = {
 const pgp = require('pg-promise')(options);
 const db = pgp(cn);
 let bookData;
+let authorData;
 
 function generateRandomNumber(min, max) {
   min = Math.ceil(min);
@@ -33,12 +35,21 @@ db.query(query)
     console.log('ERROR:', error)
   })
 
+app.get('/api/books/author', async (_req, response) => {
+  mongoose.connect(MONGODB_URI);
+  const authorSchema = new mongoose.Schema({
+    id: Number,
+    author: String,
+  });
+  const Author = mongoose.model('Author', authorSchema);
+  let authorData = await Author.find({})
+  response.json(author);
+});
 
 app.get('/api/books', (_req, response) => {
   let idx = generateRandomNumber(0, 6)
   let book = JSON.stringify({ book: bookData[idx]['title'] })
   response.json(book);
-  // response.send('Harry Potter');
 });
 
 const PORT = 3001;
