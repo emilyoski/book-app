@@ -43,7 +43,7 @@ app.get('/api/books/author', async (_req, response) => {
   });
   const Author = mongoose.model('Author', authorSchema);
   let authorData = await Author.find({})
-  response.json(author);
+  response.json(authorData);
 });
 
 app.get('/api/books', (_req, response) => {
