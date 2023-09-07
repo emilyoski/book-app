@@ -4,10 +4,18 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 
-const pgp = require('pg-promise');
-const db = pgp('postgres://username:password@host:port/database');
-let bookData;
+let options = {};
+let cn = {
+  host: 'localhost',
+  port: 5432,
+  database: "username",
+  user: "username",
+  password: "password"
+};
 
+const pgp = require('pg-promise')(options);
+const db = pgp(cn);
+let bookData;
 
 function generateRandomNumber(min, max) {
   min = Math.ceil(min);
@@ -15,19 +23,22 @@ function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-db.many('SELECT * FROM books;')
+let query = "SELECT * FROM books;";
+db.query(query)
   .then((data) => {
-    bookData = data.values
-    console.log('DATA:', data.values)
+    bookData = data
+    console.log('DATA:', data)
   })
   .catch((error) => {
     console.log('ERROR:', error)
   })
 
+
 app.get('/api/books', (_req, response) => {
   let idx = generateRandomNumber(0, 6)
-  let book = JSON.stringify({ book: bookData[idx] })
+  let book = JSON.stringify({ book: bookData[idx]['title'] })
   response.json(book);
+  // response.send('Harry Potter');
 });
 
 const PORT = 3001;
