@@ -17,7 +17,6 @@ let cn = {
 const pgp = require('pg-promise')(options);
 const db = pgp(cn);
 let bookData;
-let authorData;
 
 function generateRandomNumber(min, max) {
   min = Math.ceil(min);
@@ -42,8 +41,9 @@ app.get('/api/books/author', async (_req, response) => {
     author: String,
   });
   const Author = mongoose.model('Author', authorSchema);
-  let authorData = await Author.find({})
-  response.json(authorData);
+  let authorData = await Author.find({});
+  let author = authorData[0];
+  response.json(author);
 });
 
 app.get('/api/books', (_req, response) => {
